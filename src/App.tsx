@@ -1,29 +1,28 @@
 import './App.css'
 
-import { useEffect } from 'react';
-import MainLayout from './layout';
-import { usePageStore } from './store/PageState';
+import { useEffect, Suspense } from 'react';
+import { useRoutes, } from 'react-router-dom';
 
-import TranslatePage from './pages/Translate';
-import ContributorsPage from './pages/Contributors';
 import languages from 'src/utilities/languages';
+import MainLayout from './layout';
+import { routes } from "./routes";
 import { useTranslationsStore } from './store';
 
 function App() {
 
-  const page = usePageStore((state) => (state.page));
   const setLanguages = useTranslationsStore((state) => (state.setLanguageList));
 
   useEffect(() => {
     setLanguages(languages);
-  }, []);
+  }, [setLanguages]);
 
   return (
-    <MainLayout>
-      {page === 'translations' && <TranslatePage />}
-      {page === 'contributors' && <ContributorsPage />}
-    </MainLayout>
-  )
+    <Suspense fallback={<p>Loading...</p>}>
+      <MainLayout>
+        {useRoutes(routes)}
+      </MainLayout>
+    </Suspense>
+  );
 }
 
 export default App
