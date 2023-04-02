@@ -5,6 +5,7 @@ import { Tooltip, Editable, EditablePreview, EditableTextarea, Text } from "@cha
 import { Dictionary } from 'src/types';
 
 declare module '@tanstack/react-table' {
+    //eslint-disable-next-line
     interface TableMeta<TData extends RowData> {
         updateData: (rowIndex: number, columnId: string, value: unknown) => void
     }
@@ -19,9 +20,11 @@ export const defaultColumn: Partial<ColumnDef<Dictionary>> = {
     cell: ({ getValue, row: { index }, column: { id }, table }) => {
 
         const initialValue = getValue()
+        //eslint-disable-next-line
         const [value, setValue] = useState(initialValue)
         const onBlur = () => { table.options.meta?.updateData(index, id, value) }
 
+        //eslint-disable-next-line
         useEffect(() => {
             setValue(initialValue)
         }, [initialValue])
