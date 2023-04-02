@@ -1,38 +1,44 @@
 import { ReactNode } from 'react';
+import { Link as ReactLink, useLocation } from 'react-router-dom';
 import { Box, Flex, HStack, Link, IconButton, Button, Stack, Image, useDisclosure, useColorModeValue, useColorMode } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, AddIcon, MoonIcon, SunIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 
-import { usePageStore, Page } from '../store/PageState';
+import { PATH } from 'src/routes';
 
-type Link = {
+type linkModel = {
     label: string;
     icon?: string;
-    link?: string;
-    page?: Page;
+    external?: boolean;
+    link: string;
 }
 
-const Links: Link[] = [
-    { label: 'View Constributors', icon: '', link: '', page: 'contributors' },
-    { label: 'Start Translating', icon: '', link: '', page: 'translations' },
-    { label: 'Visit GitHub', icon: 'github', link: 'https://github.com/cawdevelopment' },
+const links: linkModel[] = [
+    { label: 'View Constributors', icon: '', link: PATH.CONTRIBUTORS },
+    { label: 'Start Translating', icon: '', link: PATH.TRANSLATE },
+    { label: 'About', icon: '', link: PATH.ABOUT },
+    { label: 'Visit GitHub', icon: 'github', link: 'https://github.com/cawdevelopment', external: true },
 ];
 
-const NavLink = ({ href, children, onClick }: { href?: string, children: ReactNode, onClick: () => void }) => (
-    <Link
-        px={2}
-        py={1}
-        rounded={'md'}
-        _hover={{
-            textDecoration: 'none',
-            bg: useColorModeValue('gray.200', 'gray.700'),
-        }}
-        onClick={onClick}
-        href={href || '#'}
-        target={href ? '_blank' : undefined}
-    >
-        {children}
-    </Link>
-);
+const NavLink = ({ href, target, bg: selectedBg, children }: { href: string, bg: string, target: string, children: ReactNode, }) => {
+    const bg = useColorModeValue('gray.200', 'gray.700');
+    return (
+        <Link
+            bg={selectedBg}
+            px={2}
+            py={1}
+            rounded={'md'}
+            _hover={{
+                textDecoration: 'none',
+                bg,
+            }}
+            as={ReactLink}
+            to={href}
+            target={target}
+        >
+            {children}
+        </Link>
+    )
+};
 
 type MainLayoutProps = {
     children: ReactNode
@@ -42,15 +48,10 @@ export default function MainLayout({ children }: MainLayoutProps) {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { colorMode, toggleColorMode } = useColorMode();
-    const setPage = usePageStore((state) => state.setPage);
-    const currentPage = usePageStore((state) => state.page);
-    const bg = useColorModeValue('gray.100', 'gray.900')
-
-    const handleClick = (link: Link) => () => {
-        if (link.page) {
-            setPage(link.page);
-        }
-    }
+    const { pathname } = useLocation()
+    const currentPage = pathname.split('/')[1];
+    const bg = useColorModeValue('gray.100', 'gray.900');
+    const selectedBg = useColorModeValue('gray.300', 'gray.700');
 
     return (
         <>
@@ -82,11 +83,12 @@ export default function MainLayout({ children }: MainLayoutProps) {
                             as={'nav'}
                             spacing={4}
                             display={{ base: 'none', md: 'flex' }}>
-                            {Links.map((link) => (
+                            {links.map((link) => (
                                 <NavLink
+                                    bg={currentPage === link.link ? selectedBg : ''}
                                     key={link.label}
                                     href={link.link}
-                                    onClick={handleClick(link)}
+                                    target={link.external ? '_blank' : '_self'}
                                 >
                                     {link.label}
                                 </NavLink>
@@ -103,7 +105,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
                             size={'sm'}
                             mr={4}
                             leftIcon={<AddIcon />}
-                            visibility={currentPage === 'translations' ? 'visible' : 'hidden'}
+                            visibility={currentPage === PATH.TRANSLATE ? 'visible' : 'hidden'}
                         >
                             Save
                         </Button>
@@ -114,7 +116,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
                             size={'sm'}
                             mr={4}
                             leftIcon={<ExternalLinkIcon />}
-                            visibility={currentPage === 'translations' ? 'visible' : 'hidden'}
+                            visibility={currentPage === PATH.TRANSLATE ? 'visible' : 'hidden'}
                         >
                             Export
                         </Button>
@@ -128,10 +130,12 @@ export default function MainLayout({ children }: MainLayoutProps) {
                 {isOpen ? (
                     <Box pb={4} display={{ md: 'none' }}>
                         <Stack as={'nav'} spacing={4}>
-                            {Links.map((link) => (
+                            {links.map((link) => (
                                 <NavLink
+                                    bg={currentPage === link.link ? selectedBg : ''}
                                     key={link.label}
-                                    onClick={handleClick(link)}
+                                    href={link.link}
+                                    target={link.external ? '_blank' : '_self'}
                                 >
                                     {link.label}
                                 </NavLink>
