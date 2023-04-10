@@ -8,7 +8,9 @@ export function buildFromPlainText(app: CAW_APP, language: string, data: any): T
         diccionary: [{
             group: 'main',
             key: 'manifesto',
-            value: data
+            value: data,
+            translated_value: "",
+            alert: 'none'
         }],
     };
 
@@ -30,7 +32,9 @@ export function buildFromFlattedStructure(app: CAW_APP, language: string, data: 
         translation.diccionary.push({
             group: 'main',
             key: key,
-            value: value
+            value: value,
+            translated_value: "",
+            alert: value.includes('{') || value.includes('}') ? 'warning' : 'none'
         });
     }
 
@@ -58,10 +62,20 @@ export function buildFromNestedStructure(app: CAW_APP, language: string, data: a
             for (const key in values) {
                 if (Object.prototype.hasOwnProperty.call(values, key)) {
                     const value = values[key];
+
+                    if (value === null || value === undefined)
+                        continue;
+
+                    //* Lorem Ipsum text
+                    if (group === 'demo' && key === 'introduction')
+                        continue;
+
                     translation.diccionary.push({
                         group: group,
                         key: key,
-                        value: value
+                        value: value,
+                        translated_value: "",
+                        alert: value.includes('{') || value.includes('}') ? 'warning' : 'none'
                     });
                 }
             }

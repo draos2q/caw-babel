@@ -37,6 +37,7 @@ export type Contributor = {
 export type Dictionary = {
     group: string,
     key: string,
+    alert: 'warning' | 'info' | 'none'
     value: string,
     translated_value: string,
 }
@@ -45,12 +46,4 @@ export type Translation = {
     language: string,
     application: CAW_APP,
     diccionary: Dictionary[],
-    // diccionary: {
-    //     [key: string]: {
-    //         group: string,
-    //         values: {
-    //             [key: string]: string
-    //         }
-    //     },
-    // }
 }
