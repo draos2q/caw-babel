@@ -40,7 +40,6 @@ export const defaultColumn: Partial<ColumnDef<Dictionary>> = {
                         size='4xl'
                         noOfLines={1}
                     >
-
                         {truncate(value as string, 100)}
                     </Text> :
                     <Editable

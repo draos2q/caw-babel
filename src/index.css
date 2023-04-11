@@ -63,3 +63,7 @@ tfoot {
 tfoot th {
   font-weight: normal;
 }
+
+.my-swal {
+  z-index: 11100 !important;
+}

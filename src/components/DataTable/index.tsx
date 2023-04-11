@@ -1,10 +1,10 @@
 import React from 'react';
 import { ColumnDef, useReactTable, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, flexRender, SortingState, getSortedRowModel } from '@tanstack/react-table';
-import { Table, Thead, Tbody, Tr, Th, Td, chakra, Stack } from "@chakra-ui/react";
+import { Table, Thead, Tbody, Tr, Th, Td, chakra } from "@chakra-ui/react";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 
 import { Dictionary } from 'src/types';
-import { useTranslationsStore } from 'src/store';
+import { useTranslationsStore } from '~/src/store/TranslationStore';
 
 import { TableTools } from './TableTools';
 import { Filter } from './Filter';
@@ -13,7 +13,7 @@ import { defaultColumn } from './types';
 
 export function DataTable() {
 
-    const translations = useTranslationsStore(state => state.englishTranslations);
+    const translations = useTranslationsStore(state => state.translation);
 
     const columns = React.useMemo<ColumnDef<Dictionary>[]>(
         () => [

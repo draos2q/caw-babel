@@ -6,7 +6,7 @@ import { useRoutes, } from 'react-router-dom';
 import languages from 'src/utilities/languages';
 import MainLayout from './layout';
 import { routes } from "./routes";
-import { useTranslationsStore } from './store';
+import { useTranslationsStore } from './store/TranslationStore';
 
 function App() {
 
