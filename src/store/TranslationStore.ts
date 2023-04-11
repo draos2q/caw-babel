@@ -1,20 +1,22 @@
 import { create } from 'zustand';
 
-import { LanguageModel, Translation } from "src/types";
-import { buildFromPlainText, buildFromFlattedStructure, buildFromNestedStructure } from 'src/utilities/buildTranslationStructure';
+import { CAW_APP, LanguageModel, Translation } from "src/types";
+import { prepareStructureForTranslation, setTranslationToLocalStorage } from 'src/utilities/buildTranslationStructure';
 
-type TranslateArgs = {
-    app: string,
+export type TranslateArgs = {
+    app: CAW_APP,
     lang: string,
     group: string,
     key: string,
     translation: string
 }
+
 interface TranslationState {
     languages: LanguageModel[],
     translation: Translation,
-    prepareEnglishTranslations: (app: string, data: any) => void
+    prepareEnglishTranslations: (app: CAW_APP, data: any) => void
     translate: (agrs: TranslateArgs) => void
+    setManyTranslations: (translations: TranslateArgs[]) => void
     setLanguageList: (languages: LanguageModel[]) => void
 }
 
@@ -26,28 +28,11 @@ const useTranslationsStore = create<TranslationState>()((set) => ({
         diccionary: []
     },
     setLanguageList: (languages: LanguageModel[]) => set(() => ({ languages: languages })),
-    prepareEnglishTranslations: (app: string, data: any) => set(state => {
+    prepareEnglishTranslations: (app: CAW_APP, data: any) => set(state => {
 
-        let translation: Translation | null = null;
-        switch (app) {
-            case 'clearing-house':
-                translation = buildFromNestedStructure(app, 'en', data);
-                break;
-            case 'website':
-                translation = buildFromFlattedStructure(app, 'en', data);
-                break;
-            case 'manifesto':
-                translation = buildFromPlainText(app, 'en', data);
-                break;
-            default:
-                translation = null;
-                break;
-        }
-
+        const translation = prepareStructureForTranslation(app, 'en', data);
         if (!translation)
             return state;
-
-        console.log(" useTranslationsStore ~ translation:", translation)
 
         return {
             ...state,
@@ -55,16 +40,39 @@ const useTranslationsStore = create<TranslationState>()((set) => ({
         }
     }),
     translate: (agrs: TranslateArgs) => set(state => {
-        console.log("🚀 ~ file: TranslationStore.ts:78 ~ useTranslationsStore ~ agrs:", agrs)
         const { group, key, translation } = agrs;
         let translationList = state.translation.diccionary;
         let translationIndex = translationList.findIndex((item) => item.group === group && item.key === key);
-        console.log("🚀 ~ file: TranslationStore.ts:62 ~ useTranslationsStore ~ translationIndex:", translationIndex)
 
         if (translationIndex === -1)
             return state;
 
         translationList[translationIndex].translated_value = translation;
+
+        //* save the translation in the local storage
+        setTranslationToLocalStorage({ app: agrs.app, language: agrs.lang, group: agrs.group, key: agrs.key, value: agrs.translation });
+
+        return {
+            ...state,
+            translation: {
+                ...state.translation,
+                diccionary: translationList
+            }
+        }
+    }),
+    setManyTranslations: (translations: TranslateArgs[]) => set(state => {
+
+        let translationList = state.translation.diccionary;
+
+        translations.forEach((item) => {
+            let translationIndex = translationList.findIndex((translation) => translation.group === item.group && translation.key === item.key);
+            if (translationIndex !== -1) {
+                translationList[translationIndex].translated_value = item.translation;
+
+                //* save the translation in the local storage
+                setTranslationToLocalStorage({ app: item.app, language: item.lang, group: item.group, key: item.key, value: item.translation });
+            }
+        });
 
         return {
             ...state,

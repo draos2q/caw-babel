@@ -6,6 +6,8 @@ export const MySwal = withReactContent(Swal);
 type AlertProps = {
   confirmButtonColor?: string,
   cancelButtonColor?: string,
+  cancelLabel?: string,
+  confirmLabel?: string,
   html?: boolean;
 }
 
@@ -19,8 +21,6 @@ type ShowLoadingProps = AlertProps & {
 type confirmAlertProps = AlertProps & {
   title?: string;
   text?: string;
-  cancelLabel?: string,
-  confirmLabel?: string,
   isWarning?: boolean,
   icon?: SweetAlertIcon;
   footer?: string | null;
@@ -104,6 +104,7 @@ export const ShowLoading = async (
     title: title,
     timer: timer,
     timerProgressBar: true,
+    customClass: { container: "my-swal" },
     didOpen: () => {
       MySwal.showLoading()
     },
@@ -111,6 +112,44 @@ export const ShowLoading = async (
       clearInterval(timerInterval)
     }
   });
+}
+
+type ShowSelectOptionAlertProps = AlertProps & {
+  title?: string,
+  text?: string,
+  placeHolder?: string,
+  inputOptions: ReadonlyMap<string, string> | Record<string, any>
+}
+
+export async function showSelectOptionAlert(options: ShowSelectOptionAlertProps) {
+
+  const { cancelButtonColor, confirmButtonColor, html, title, text, confirmLabel, cancelLabel, placeHolder, inputOptions } = options;
+  const { value: selectedValue } = await MySwal.fire({
+    title,
+    text,
+    input: 'select',
+    html,
+    inputOptions,
+    cancelButtonColor,
+    confirmButtonColor,
+    confirmButtonText: confirmLabel || 'Continue',
+    cancelButtonText: cancelLabel || 'Cancel',
+    inputPlaceholder: placeHolder || 'Select an option',
+    showCancelButton: true,
+    customClass: { container: "my-swal" },
+    reverseButtons: true,
+    inputValidator: (value) => {
+      return new Promise((resolve) => {
+
+        if (!value)
+          resolve('You need to select an option :)')
+
+        resolve('')
+      })
+    }
+  });
+
+  return selectedValue;
 }
 
 export const StopLoading = () => {

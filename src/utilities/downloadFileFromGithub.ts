@@ -1,39 +1,70 @@
-import { CAW_APP } from '../types';
+import { CAW_APP } from 'src/types';
 
-export async function downloadFilefromGithub(app: CAW_APP) {
+export async function downloadFilefromGithub(app: CAW_APP, languageIsoCode: string) {
 
     let url = '';
     let contentTypes = '';
 
     switch (app) {
         case 'clearing-house':
-            url = `https://raw.githubusercontent.com/draos2q/caw-front/main/src/locales/en.json`;
+            url = `https://raw.githubusercontent.com/draos2q/caw-front/main/src/locales/${languageIsoCode}.json`;
             contentTypes = 'application/json';
             break;
         case 'website':
-            url = `https://raw.githubusercontent.com/draos2q/caw-site/main/assets/lang/i18n.en.json`;
+            url = `https://raw.githubusercontent.com/draos2q/caw-site/main/assets/lang/i18n.${languageIsoCode}.json`;
             contentTypes = 'application/json';
             break;
         case 'manifesto':
-            url = `https://raw.githubusercontent.com/draos2q/caw-site/main/assets/lang/manifesto.en.txt`;
+            url = `https://raw.githubusercontent.com/draos2q/caw-site/main/assets/lang/manifesto.${languageIsoCode}.txt`;
             contentTypes = 'text/plain';
     }
 
-    if (!url)
-        throw new Error(`There is no url for : ${app}`);
-
-    const data = await fetch(url);
-    if (!data.ok)
-        throw new Error(`There is no data for : ${app}`);
-
-    switch (contentTypes) {
-        case 'application/json':
-            const json = await data.json();
-            return json;
-        case 'text/plain':
-            const text = await data.text();
-            return text;
+    if (!url) {
+        return {
+            error: true,
+            message: `There is no url for : ${app}`,
+            data: null
+        }
     }
 
-    throw new Error(`There is no content type for : ${app}`);
+    const response = await fetch(url);
+    if (!response.ok) {
+        return {
+            error: true,
+            message: `There is no data for : ${app} and language: ${languageIsoCode}`,
+            data: null
+        }
+    }
+
+    let translation = null;
+    switch (contentTypes) {
+        case 'application/json':
+            translation = await response.json();
+            break;
+        case 'text/plain':
+            translation = await response.text();
+            break;
+        default:
+            {
+                return {
+                    error: true,
+                    message: `There is no content type for : ${app}`,
+                    data: null
+                }
+            }
+    }
+
+    if (!translation) {
+        return {
+            error: true,
+            message: `There is no data for : ${app} and language: ${languageIsoCode}`,
+            data: null
+        }
+    }
+
+    return {
+        error: false,
+        message: '',
+        data: translation
+    }
 }

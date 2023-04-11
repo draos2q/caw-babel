@@ -1,4 +1,4 @@
-import { IconButton, Tooltip } from '@chakra-ui/react';
+import { HStack, IconButton, Tooltip, VStack, Text } from '@chakra-ui/react';
 import { CopyIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 
 import { useTranslationsStore } from 'src/store/TranslationStore';
@@ -26,23 +26,29 @@ export function EnglishContentCell({ value, jsonGroup, jsonKey }: Props) {
 
     return (
         <>
-            <Tooltip label="Copy tex to clipboard" aria-label="copy-text">
-                <IconButton
-                    aria-label="copy-text"
-                    icon={<CopyIcon color="gray.500" />}
-                    size="sm"
-                    variant="ghost"
-                    onClick={handleCopy(value)} />
-            </Tooltip>
-            <Tooltip label="Copy text to translate cell" aria-label="duplicate-text">
-                <IconButton
-                    aria-label="duplicate-text"
-                    icon={<ArrowForwardIcon color="gray.500" />}
-                    size="sm"
-                    variant="ghost"
-                    onClick={handleCopyToTranslateCell(value)} />
-            </Tooltip>
-            {value}
+            <HStack>
+                <VStack>
+                    <Tooltip label="Copy tex to clipboard" aria-label="copy-text">
+                        <IconButton
+                            aria-label="copy-text"
+                            icon={<CopyIcon color="gray.500" />}
+                            size="sm"
+                            variant="ghost"
+                            onClick={handleCopy(value)} />
+                    </Tooltip>
+                    <Tooltip label="Copy text to translate cell" aria-label="duplicate-text">
+                        <IconButton
+                            aria-label="duplicate-text"
+                            icon={<ArrowForwardIcon color="gray.500" />}
+                            size="sm"
+                            variant="ghost"
+                            onClick={handleCopyToTranslateCell(value)} />
+                    </Tooltip>
+                </VStack>
+                <Text>
+                    {value}
+                </Text>
+            </HStack>
         </>
     );
 }

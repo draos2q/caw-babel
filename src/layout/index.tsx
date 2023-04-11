@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Link as ReactLink, useLocation } from 'react-router-dom';
 import { Box, Flex, HStack, Link, IconButton, Button, Stack, Image, useDisclosure, useColorModeValue, useColorMode } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon, AddIcon, MoonIcon, SunIcon, ExternalLinkIcon } from '@chakra-ui/icons';
+import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 
 import { PATH } from 'src/routes';
 
@@ -99,27 +99,6 @@ export default function MainLayout({ children }: MainLayoutProps) {
                         alignItems={'center'}
                         gap={2}
                     >
-                        <Button
-                            variant={'solid'}
-                            colorScheme={'teal'}
-                            size={'sm'}
-                            mr={4}
-                            leftIcon={<AddIcon />}
-                            visibility={currentPage === PATH.TRANSLATE ? 'visible' : 'hidden'}
-                        >
-                            Save
-                        </Button>
-
-                        <Button
-                            variant={'solid'}
-                            colorScheme={'yellow'}
-                            size={'sm'}
-                            mr={4}
-                            leftIcon={<ExternalLinkIcon />}
-                            visibility={currentPage === PATH.TRANSLATE ? 'visible' : 'hidden'}
-                        >
-                            Export
-                        </Button>
                         <Button onClick={toggleColorMode}>
                             {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
                         </Button>

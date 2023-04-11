@@ -95,3 +95,39 @@ export function buildFromNestedStructure(app: CAW_APP, language: string, data: a
 
     return translation;
 }
+export function generateLsKey({ app, language, group, key }: { app: CAW_APP; language: string; group: string; key: string; }) {
+    const ls_key = `${app}/${language}:${group}.${key}`;
+    return ls_key;
+}
+
+export function getTranslationFromLocalStorage({ app, language, group, key }: { app: CAW_APP; language: string; group: string; key: string; }) {
+    const ls_key = generateLsKey({ app, language, group, key });
+    const translation = localStorage.getItem(ls_key);
+    return String(translation || '');
+}
+
+export function setTranslationToLocalStorage({ app, language, group, key, value }: { app: CAW_APP; language: string; group: string; key: string; value: string; }) {
+    const ls_key = generateLsKey({ app, language, group, key });
+    localStorage.setItem(ls_key, value);
+}
+
+export function prepareStructureForTranslation(app: CAW_APP, language: string, data: any): Translation | null {
+
+    let translation: Translation | null = null;
+    switch (app) {
+        case 'clearing-house':
+            translation = buildFromNestedStructure(app, language, data);
+            break;
+        case 'website':
+            translation = buildFromFlattedStructure(app, language, data);
+            break;
+        case 'manifesto':
+            translation = buildFromPlainText(app, language, data);
+            break;
+        default:
+            translation = null;
+            break;
+    }
+
+    return translation;
+}
