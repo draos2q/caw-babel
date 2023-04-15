@@ -1,7 +1,6 @@
 import { CAW_APP } from 'src/types';
 
-export async function downloadFilefromGithub(app: CAW_APP, languageIsoCode: string) {
-
+export function getFilesPerApp(app: CAW_APP, languageIsoCode: string) {
     let url = '';
     let contentTypes = '';
 
@@ -19,6 +18,15 @@ export async function downloadFilefromGithub(app: CAW_APP, languageIsoCode: stri
             contentTypes = 'text/plain';
     }
 
+    return {
+        url,
+        contentTypes
+    };
+}
+
+export async function downloadFilefromGithub(app: CAW_APP, languageIsoCode: string) {
+
+    let { url, contentTypes } = getFilesPerApp(app, languageIsoCode);
     if (!url) {
         return {
             error: true,

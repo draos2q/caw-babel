@@ -17,12 +17,17 @@ export default function LoadTranslationButton() {
         setLocked: state.setTranslateControlsLocked
     }), shallow);
 
-    const setEnglishTranslations = useTranslationsStore(state => state.prepareEnglishTranslations);
-    const setManyTranslations = useTranslationsStore(state => state.setManyTranslations);
+    const { allLanguages, setEnglishTranslations, setManyTranslations } = useTranslationsStore(state => ({
+        allLanguages: state.languages,
+        setEnglishTranslations: state.prepareEnglishTranslations,
+        setManyTranslations: state.setManyTranslations
+    }), shallow);
+
 
     const download = async () => {
         try {
 
+            const langName = allLanguages.find((l) => l.code === lang)?.name;
             ShowLoading({ title: 'Fetching  available English translations' });
             await new Promise((resolve) => setTimeout(resolve, 4000));
 
@@ -34,21 +39,21 @@ export default function LoadTranslationButton() {
             StopLoading();
 
             const options = {
-                'local': 'Resume from my last saved point',
-                'remote': 'Download all translations made by other users'
+                'local': 'Resume from my last saved point | Empty if first time',
+                'remote': 'Get translations made by other users | Useful if first time'
             };
 
             const point = await showSelectOptionAlert({
                 title: '',
-                text: 'Please select the point from where you want to start/resume the translation process.',
+                text: 'Please select the starting point from which you want to translate',
                 inputOptions: options,
-                placeHolder: 'Select an option',
+                placeHolder: 'Pick an option',
             });
 
             if (!point)
                 return true;
 
-            ShowLoading({ title: `Fetching  available translations for ${lang}` });
+            ShowLoading({ title: `Fetching  available translations for ${langName}` });
             await new Promise((resolve) => setTimeout(resolve, 4000));
 
             let availableTranslations: TranslateArgs[] = [];

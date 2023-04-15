@@ -3,6 +3,8 @@ import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 import { useTranslationsStore } from "src/store/TranslationStore";
 import { usePageStore } from "src/store/PageStore";
+import { generateTranslateFile } from 'src/utilities/buildTranslationStructure';
+
 import DataTable from "./DataTable";
 import Steps from './steps';
 
@@ -10,6 +12,7 @@ export default function TranslatePage() {
 
     const translation = useTranslationsStore(state => state.translation);
     const locked = usePageStore(state => state.translate_controls_locked);
+    const handleExport = () => generateTranslateFile(translation);
 
     return (
         <Container maxW='full' h="full" >
@@ -38,6 +41,7 @@ export default function TranslatePage() {
                     size={'sm'}
                     mr={4}
                     leftIcon={<ExternalLinkIcon />}
+                    onClick={handleExport}
                 >
                     Export
                 </Button>

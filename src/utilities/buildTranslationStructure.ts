@@ -1,4 +1,8 @@
-import { CAW_APP, Translation } from "../types";
+import download from 'downloadjs';
+
+import { getFilesPerApp } from 'src/utilities/downloadFileFromGithub';
+import { CAW_APP, Translation } from "src/types";
+import { sluglify } from './helper';
 
 export function buildFromPlainText(app: CAW_APP, language: string, data: any): Translation {
 
@@ -130,4 +134,77 @@ export function prepareStructureForTranslation(app: CAW_APP, language: string, d
     }
 
     return translation;
+}
+
+function buildExporToNestedStructure(translation: Translation) {
+
+    // get  unique groups sorted alphabetically                                
+    const groups = [...new Set(translation.diccionary.map(item => item.group))].sort();
+
+    //get all the keys for each group
+    const exportableStructure: any = {};
+    groups.forEach(group => {
+        exportableStructure[group] = {};
+        translation.diccionary.filter(item => item.group === group).forEach(item => {
+            exportableStructure[group][item.key] = item.translated_value;
+        });
+    }
+    );
+
+    return exportableStructure;
+}
+
+function buildtoFlattedStructure(translation: Translation) {
+
+    const exportableStructure: any = {};
+    translation.diccionary.forEach(item => {
+        exportableStructure[item.key] = item.translated_value;
+    });
+
+    return exportableStructure;
+}
+
+export function buildToPlainText(translation: Translation) {
+    return translation.diccionary[0].translated_value;
+}
+
+export function buildExportableStructure(translation: Translation) {
+
+    let exportableStructure: any = {};
+
+    switch (translation.application) {
+        case 'clearing-house':
+            exportableStructure = buildExporToNestedStructure(translation);
+            break;
+        case 'website':
+            exportableStructure = buildtoFlattedStructure(translation);
+            break;
+        case 'manifesto':
+            exportableStructure = buildToPlainText(translation);
+            break;
+        default:
+            exportableStructure = null;
+            break;
+    }
+
+    return exportableStructure;
+}
+
+export function generateTranslateFile(translation: Translation) {
+
+    const { contentTypes } = getFilesPerApp(translation.application, translation.language);
+    const exportableStructure = buildExportableStructure(translation);
+    switch (contentTypes) {
+        case 'application/json':
+            const json = JSON.stringify(exportableStructure, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            download(blob, `${sluglify(translation.application)}-${sluglify(translation.language)}.json`);
+            break;
+        case 'text/plain':
+            const blob2 = new Blob([exportableStructure], { type: 'text/plain' });
+            download(blob2, `${sluglify(translation.application)}-${sluglify(translation.language)}.txt`);
+            break;
+        default:
+            return null;
+    }
 }
