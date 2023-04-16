@@ -46,7 +46,7 @@ export default function EditableCell({ value, jsonKey, jsonGroup }: Props) {
                     //add custom styles for the editable preview
                     fontWeight: localValue ? "bold" : "normal",
                     // fontSize: "2xl",
-                    color: localValue ? "teal.900" : "gray.400",
+                    color: localValue ? 'inherit' : "gray.400",
                     lineHeight: "shorter",
                 },
                 //add custom styles for the editable input

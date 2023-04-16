@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Box, Heading, Stack, Textarea } from "@chakra-ui/react";
+import { Box, Heading, Stack, Textarea, useColorModeValue } from "@chakra-ui/react";
 import SplitPane from 'react-split-pane-next';
 
 import { useTranslationsStore } from 'src/store/TranslationStore';
@@ -12,7 +12,7 @@ type EditableTextAreaProps = {
 
 function EditableTextArea(props: EditableTextAreaProps) {
 
-    console.log('render.EditableTextArea');
+    const bg = useColorModeValue('white.50', 'gray.800');
     const { textArea1Ref, textArea2Ref } = props;
     const translation = useTranslationsStore(state => state.translation);
     const lang = usePageStore(state => state.language);
@@ -39,9 +39,11 @@ function EditableTextArea(props: EditableTextAreaProps) {
             height={'100%'}
             readOnly={false}
             ref={textArea2Ref}
+            bg={bg}
             onScroll={handleTextArea2Scroll}
             value={translation.diccionary[0].translated_value}
             onChange={(e) => handleTextChange(e.target.value)}
+            placeholder='Start typing your translation here'
         />
     );
 }
@@ -54,7 +56,7 @@ type ReadOnlyTextAreaProps = {
 
 function ReadOnlyTextArea({ text, textArea1Ref, textArea2Ref }: ReadOnlyTextAreaProps) {
 
-    console.log('render.ReadOnlyTextArea');
+    const bg = useColorModeValue('gray.50', 'gray.800');
 
     const handleTextArea1Scroll = () => {
         if (textArea2Ref.current && textArea1Ref.current)
@@ -70,7 +72,8 @@ function ReadOnlyTextArea({ text, textArea1Ref, textArea2Ref }: ReadOnlyTextArea
             readOnly={true}
             id='original-textarea'
             height={'100%'}
-            bg={'gray.50'}
+            // color={textColor}
+            bg={bg}
             ref={textArea1Ref}
             onScroll={handleTextArea1Scroll}
             value={text}
@@ -89,9 +92,9 @@ export default function ManifestoEditor() {
         <Stack
             id='stack-manifesto-editor'
             h="container.xl"
-            borderWidth={'thin'}
-            borderColor={'gray.200'}
-            borderStyle={'dotted'}
+            // borderWidth={'thin'}
+            // borderColor={'gray.200'}
+            // borderStyle={'dotted'}
             padding={2}
             direction={{ base: "column", md: "row" }}
         >
@@ -100,8 +103,8 @@ export default function ManifestoEditor() {
                 split="vertical"
                 allowResize={true}
                 primary="second"
-                step={2}
                 defaultSize="50%"
+                resizerStyle={{ backgroundColor: 'red' }}
             >
                 <Box height={'100%'} >
                     <Heading size={'md'}>

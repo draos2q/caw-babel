@@ -14,7 +14,10 @@ export default function PlatformController() {
 
   return (
     <RadioGroup defaultValue={platform} mt={3}>
-      <Stack spacing={5} direction='row'>
+      <Stack
+        spacing={5}
+        direction={{ base: 'column', md: 'row' }}
+      >
         {CAW_APPS_OPTIONS.map((value) => {
           return (
             <Radio
