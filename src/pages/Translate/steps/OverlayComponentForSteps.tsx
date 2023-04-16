@@ -40,7 +40,7 @@ export default function OverlayComponentForSteps() {
                 Unlock
             </Button>
             <Text color={textColor}>
-                You are translating <b>{appName}</b> to <b>{langName}</b>
+                You are translating :  <b>{appName}</b> to <b>{langName}</b>
             </Text>
         </VStack>
     );

@@ -5,7 +5,8 @@ import { useTranslationsStore } from "src/store/TranslationStore";
 import { usePageStore } from "src/store/PageStore";
 import { generateTranslateFile } from 'src/utilities/buildTranslationStructure';
 
-import DataTable from "./DataTable";
+import ManifestoEditor from './ManifestoEditor';
+import DataTableEditor from "./DataTableEditor";
 import Steps from './steps';
 
 export default function TranslatePage() {
@@ -26,12 +27,13 @@ export default function TranslatePage() {
             <Flex
                 alignItems="center"
                 justifyContent={'space-between'}
+                direction={{ base: "column", md: "row" }}
                 gap="2"
                 pt={2}
                 pb={2}
             >
                 <Code m={2} colorScheme="green">
-                    Your work is locally saved automatically. You can close the browser on and come back later to continue working.
+                    Your work is locally saved automatically. You can close the browser and come back later to continue working.
                 </Code>
                 <Spacer />
                 <Button
@@ -46,7 +48,7 @@ export default function TranslatePage() {
                     Export
                 </Button>
             </Flex>
-            <DataTable data={translation} />
+            {translation.application === 'manifesto' ? <ManifestoEditor /> : <DataTableEditor data={translation} />}
         </Container>
     );
 }

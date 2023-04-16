@@ -39,8 +39,8 @@ export default function LoadTranslationButton() {
             StopLoading();
 
             const options = {
-                'local': 'Resume from my last saved point | Empty if first time',
-                'remote': 'Get translations made by other users | Useful if first time'
+                'local': 'Resume from my last saved point - Empty if first time',
+                'remote': 'Get translations made by other users - Useful if first time'
             };
 
             const point = await showSelectOptionAlert({

@@ -2,15 +2,16 @@ import { HStack, IconButton, Tooltip, VStack, Text } from '@chakra-ui/react';
 import { CopyIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 
 import { useTranslationsStore } from 'src/store/TranslationStore';
-import { usePageStore } from '~/src/store/PageStore';
+import { usePageStore } from 'src/store/PageStore';
 
 type Props = {
     value: string;
     jsonKey: string;
     jsonGroup: string;
+    alert: 'warning' | 'info' | 'none';
 }
 
-export function EnglishContentCell({ value, jsonGroup, jsonKey }: Props) {
+export function EnglishContentCell({ value, jsonGroup, jsonKey, alert }: Props) {
 
     const lang = usePageStore(state => state.language);
     const app = usePageStore(state => state.platform);
