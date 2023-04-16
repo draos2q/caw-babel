@@ -29,7 +29,6 @@ export default function LoadTranslationButton() {
 
             const langName = allLanguages.find((l) => l.code === lang)?.name;
             ShowLoading({ title: 'Fetching  available English translations' });
-            await new Promise((resolve) => setTimeout(resolve, 4000));
 
             const { error, message, data: en_data } = await downloadFilefromGithub(app, 'en');
             if (error)
@@ -54,7 +53,6 @@ export default function LoadTranslationButton() {
                 return true;
 
             ShowLoading({ title: `Fetching  available translations for ${langName}` });
-            await new Promise((resolve) => setTimeout(resolve, 4000));
 
             let availableTranslations: TranslateArgs[] = [];
             switch (point) {
@@ -110,14 +108,17 @@ export default function LoadTranslationButton() {
             setManyTranslations(availableTranslations);
             return true;
         }
-        catch (error: any) {
-            console.error(error);
-            StopLoading();
-            toast.closeAll();
-            toast({
-                title: " Error loading translations",
-                description: error?.message || 'Something went wrong',
-            });
+        catch (error: unknown) {
+
+            if (error instanceof Error) {
+                StopLoading();
+                toast.closeAll();
+                toast({
+                    title: " Error loading translations",
+                    description: error?.message || 'Something went wrong',
+                });
+            }
+
             return false;
         }
         finally {

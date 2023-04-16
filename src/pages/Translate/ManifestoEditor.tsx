@@ -1,6 +1,7 @@
+import "allotment/dist/style.css";
 import { useRef } from 'react';
-import { Box, Heading, Stack, Textarea, useColorModeValue } from "@chakra-ui/react";
-import SplitPane from 'react-split-pane-next';
+import { Heading, Stack, Textarea, useColorModeValue } from "@chakra-ui/react";
+import { Allotment } from "allotment";
 
 import { useTranslationsStore } from 'src/store/TranslationStore';
 import { usePageStore } from 'src/store/PageStore';
@@ -72,7 +73,6 @@ function ReadOnlyTextArea({ text, textArea1Ref, textArea2Ref }: ReadOnlyTextArea
             readOnly={true}
             id='original-textarea'
             height={'100%'}
-            // color={textColor}
             bg={bg}
             ref={textArea1Ref}
             onScroll={handleTextArea1Scroll}
@@ -83,7 +83,6 @@ function ReadOnlyTextArea({ text, textArea1Ref, textArea2Ref }: ReadOnlyTextArea
 
 export default function ManifestoEditor() {
 
-    console.log('render.ManifestoEditor');
     const textArea1Ref = useRef<HTMLTextAreaElement>(null);
     const textArea2Ref = useRef<HTMLTextAreaElement>(null);
     const translation = useTranslationsStore(state => state.translation);
@@ -92,21 +91,18 @@ export default function ManifestoEditor() {
         <Stack
             id='stack-manifesto-editor'
             h="container.xl"
-            // borderWidth={'thin'}
-            // borderColor={'gray.200'}
-            // borderStyle={'dotted'}
-            padding={2}
+            borderWidth={'thin'}
+            borderColor={'gray.200'}
+            borderStyle={'dotted'}
             direction={{ base: "column", md: "row" }}
         >
-            <SplitPane
-                id="split-pane"
-                split="vertical"
-                allowResize={true}
-                primary="second"
-                defaultSize="50%"
-                resizerStyle={{ backgroundColor: 'red' }}
+            <Allotment
+                separator={true}
+                snap={true}
             >
-                <Box height={'100%'} >
+                <Allotment.Pane
+                    minSize={200}
+                >
                     <Heading size={'md'}>
                         ENGLISH CONTENT
                     </Heading>
@@ -115,8 +111,10 @@ export default function ManifestoEditor() {
                         textArea1Ref={textArea1Ref}
                         textArea2Ref={textArea2Ref}
                     />
-                </Box>
-                <Box height={'100%'} >
+                </Allotment.Pane>
+                <Allotment.Pane
+                    minSize={200}
+                >
                     <Heading size={'md'}>
                         CONTENT IN YOUR LANGUAGE
                     </Heading>
@@ -124,8 +122,8 @@ export default function ManifestoEditor() {
                         textArea1Ref={textArea1Ref}
                         textArea2Ref={textArea2Ref}
                     />
-                </Box>
-            </SplitPane>
+                </Allotment.Pane>
+            </Allotment>
         </Stack>
     );
 }
