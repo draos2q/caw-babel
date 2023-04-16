@@ -2,6 +2,7 @@ import { Button, Text, useColorModeValue, VStack } from '@chakra-ui/react';
 import { usePageStore } from '~/src/store/PageStore';
 import { CAW_APPS_OPTIONS } from '~/src/types';
 import languages from '~/src/utilities/languages';
+import { confirmAlert } from "~/src/utilities/SweetAlert";
 
 export default function OverlayComponentForSteps() {
 
@@ -13,6 +14,21 @@ export default function OverlayComponentForSteps() {
     const appName = CAW_APPS_OPTIONS.find(a => a.app === app)?.name || app;
     const langName = languages.find(l => l.code === lang)?.name || lang;
     const setLocked = usePageStore(state => state.setTranslateControlsLocked);
+
+
+    const handleUnlock = async () => {
+
+        const prompt = await confirmAlert({
+            title: 'Confirm',
+            text: 'Are you sure you want to unlock the controls?',
+            footer: 'This will clean up the translation data and allow you to change the language and app, your progress is saved and will be resumed when you come back to this set of translations.',
+            cancelLabel: 'No, Continue translating',
+            confirmLabel: 'Yes, Unlock'
+        });
+
+        if (prompt.isConfirmed)
+            setLocked(false);
+    }
 
     return (
         <VStack
@@ -36,7 +52,7 @@ export default function OverlayComponentForSteps() {
             <Text as="b" color={textColor}>
                 This section has been locked to avoid unintended changes while you are translating.
             </Text>
-            <Button variant={"outline"} colorScheme="yellow" onClick={() => setLocked(false)}>
+            <Button variant={"outline"} colorScheme="yellow" onClick={handleUnlock}>
                 Unlock
             </Button>
             <Text color={textColor}>

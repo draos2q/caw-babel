@@ -28,14 +28,6 @@ export default function LoadTranslationButton() {
         try {
 
             const langName = allLanguages.find((l) => l.code === lang)?.name;
-            ShowLoading({ title: 'Fetching  available English translations' });
-
-            const { error, message, data: en_data } = await downloadFilefromGithub(app, 'en');
-            if (error)
-                throw new Error(message);
-
-            setEnglishTranslations(app, en_data);
-            StopLoading();
 
             const options = {
                 'local': 'Resume from my last saved point - Empty if first time',
@@ -44,14 +36,21 @@ export default function LoadTranslationButton() {
 
             const point = await showSelectOptionAlert({
                 title: '',
-                text: 'Please select the starting point from which you want to translate',
+                text: 'Choose the starting point from which you want to translate',
                 inputOptions: options,
-                placeHolder: 'Pick an option',
+                placeHolder: 'pick an option',
             });
 
             if (!point)
-                return true;
+                return false;
 
+            ShowLoading({ title: 'Fetching  available English translations' });
+            const { error, message, data: en_data } = await downloadFilefromGithub(app, 'en');
+            if (error)
+                throw new Error(message);
+
+            setEnglishTranslations(app, en_data);
+            StopLoading();
             ShowLoading({ title: `Fetching  available translations for ${langName}` });
 
             let availableTranslations: TranslateArgs[] = [];
