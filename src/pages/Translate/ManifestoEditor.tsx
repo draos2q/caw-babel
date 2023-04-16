@@ -17,6 +17,7 @@ function EditableTextArea(props: EditableTextAreaProps) {
     const { textArea1Ref, textArea2Ref } = props;
     const translation = useTranslationsStore(state => state.translation);
     const lang = usePageStore(state => state.language);
+    const rtl = usePageStore(state => state.rtl);
     const app = usePageStore(state => state.platform);
     const translate = useTranslationsStore(state => state.translate);
 
@@ -41,6 +42,7 @@ function EditableTextArea(props: EditableTextAreaProps) {
             readOnly={false}
             ref={textArea2Ref}
             bg={bg}
+            dir={rtl ? 'rtl' : 'ltr'}
             onScroll={handleTextArea2Scroll}
             value={translation.diccionary[0].translated_value}
             onChange={(e) => handleTextChange(e.target.value)}

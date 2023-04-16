@@ -31,6 +31,7 @@ export default function TranslatePage() {
                 gap="2"
                 pt={2}
                 pb={2}
+                visibility={locked ? "visible" : "hidden"}
             >
                 <Code m={2} colorScheme="green">
                     Your work is locally saved automatically. You can close the browser and come back later to continue working.
@@ -48,7 +49,11 @@ export default function TranslatePage() {
                     Export
                 </Button>
             </Flex>
-            {translation.application === 'manifesto' ? <ManifestoEditor /> : <DataTableEditor data={translation} />}
+            {locked ? (translation.application === 'manifesto' ? <ManifestoEditor /> : <DataTableEditor data={translation} />) :
+                <p>
+                    <b>Note:</b> Please select an application and a language to start translating.
+                </p>
+            }            
         </Container>
     );
 }

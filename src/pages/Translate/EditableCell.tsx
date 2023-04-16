@@ -14,6 +14,7 @@ export default function EditableCell({ value, jsonKey, jsonGroup }: Props) {
 
     const lang = usePageStore(state => state.language);
     const app = usePageStore(state => state.platform);
+    const rtl = usePageStore(state => state.rtl);
     const translate = useTranslationsStore(state => state.translate);
     const [localValue, setValue] = useState<string>('');
 
@@ -35,6 +36,7 @@ export default function EditableCell({ value, jsonKey, jsonGroup }: Props) {
             placeholder='Enter your translation'
             onChange={handleValueChange}
             onBlur={handleBlur}
+            dir={rtl ? 'rtl' : 'ltr'}
             sx={{
                 //add custom placeholder styles
                 "&::placeholder": {
