@@ -29,8 +29,9 @@ export type LanguageModel = {
 }
 
 export type Contributor = {
+    id: string,
     name: string,
-    twitter: string,
+    profile: string,
     avatar: string,
 }
 
