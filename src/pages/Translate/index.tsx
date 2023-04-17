@@ -13,7 +13,20 @@ export default function TranslatePage() {
 
     const translation = useTranslationsStore(state => state.translation);
     const locked = usePageStore(state => state.translate_controls_locked);
-    const handleExport = () => generateTranslateFile(translation);
+
+
+    const handleExport = () => {
+        generateTranslateFile(translation);
+        const letters = document.querySelectorAll(".letter");
+
+        letters.forEach((letter) => {
+            const randomDelay = Math.random() * 5;
+
+            const el = letter as HTMLElement;
+            el.style.animationDelay = `${randomDelay}s`;
+        });
+
+    };
 
     return (
         <Container maxW='full' h="full" >

@@ -3,13 +3,27 @@ import { Contributor } from "src/types";
 
 interface ContributorsState {
     contributors: Contributor[]
-    addContributor: (contributor: Contributor) => void
+    addContributors: (contributor: Contributor[]) => void
 }
 
-const useTranslationsStore = create<ContributorsState>()((set) => ({
+const useContributorsStore = create<ContributorsState>()((set) => ({
     contributors: [],
-    addContributor: (contributor: Contributor) => set(state => ({ contributors: [...state.contributors, contributor] })),
-    addContributors: (contributors: Contributor[]) => set(state => ({ contributors: [...state.contributors, ...contributors] })),
+    addContributors: (contributors: Contributor[]) => set(state => (mergeContributors(state, contributors))),
 }));
 
-export { useTranslationsStore };
+
+function mergeContributors(state: ContributorsState, contributors: Contributor[]): ContributorsState | Partial<ContributorsState> {
+
+    const newContributors = contributors.filter(contributor => {
+        return !state.contributors.find(c => c.id === contributor.id);
+    });
+
+    if (newContributors.length === 0) {
+        return {};
+    }
+
+
+    return { contributors: [ ...state.contributors, ...contributors ] };
+}
+
+export { useContributorsStore };
