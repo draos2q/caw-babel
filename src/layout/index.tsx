@@ -16,6 +16,7 @@ const links: linkModel[] = [
     { label: 'View Constributors', icon: '', link: PATH.CONTRIBUTORS },
     { label: 'Start Translating', icon: '', link: PATH.TRANSLATE },
     { label: 'About', icon: '', link: PATH.ABOUT },
+    { label: 'Paper', icon: 'github', link: 'https://caw.is', external: true },
     { label: 'Visit GitHub', icon: 'github', link: 'https://github.com/cawdevelopment', external: true },
 ];
 
