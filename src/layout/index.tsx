@@ -20,7 +20,7 @@ const links: linkModel[] = [
     { label: 'Visit GitHub', icon: 'github', link: 'https://github.com/cawdevelopment', external: true },
 ];
 
-const NavLink = ({ href, target, bg: selectedBg, children }: { href: string, bg: string, target: string, children: ReactNode, }) => {
+const NavLink = ({ href, target, bg: selectedBg, onClick, children }: { href: string, bg: string, target: string, children: ReactNode, onClick?: () => void }) => {
     const bg = useColorModeValue('gray.200', 'gray.700');
     return (
         <Link
@@ -35,6 +35,7 @@ const NavLink = ({ href, target, bg: selectedBg, children }: { href: string, bg:
             as={ReactLink}
             to={href}
             target={target}
+            onClick={onClick}
         >
             {children}
         </Link>
@@ -90,6 +91,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
                                     key={link.label}
                                     href={link.link}
                                     target={link.external ? '_blank' : '_self'}
+                                    onClick={onClose}
                                 >
                                     {link.label}
                                 </NavLink>
@@ -116,6 +118,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
                                     key={link.label}
                                     href={link.link}
                                     target={link.external ? '_blank' : '_self'}
+                                    onClick={onClose}
                                 >
                                     {link.label}
                                 </NavLink>
