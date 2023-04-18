@@ -5,6 +5,7 @@ import Blockies from 'react-blockies';
 
 
 import { useContributorsStore } from "src/store/ContributorStore";
+import { isValidUrl } from "src/utilities/helper";
 
 const list = {
     visible: {
@@ -90,7 +91,7 @@ export default function Contributors() {
                                     aria-label={person.name}
                                 >
                                     <Link
-                                        isExternal
+                                        isExternal={isValidUrl(person.profile)}
                                         as={RouterLink}
                                         to={person.profile}
                                         padding={0}

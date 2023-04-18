@@ -10,15 +10,15 @@ import { getTranslationFromLocalStorage, prepareStructureForTranslation } from '
 export default function LoadTranslationButton() {
 
     const toast = useToast();
-    const { app, lang, locked, setLocked } = usePageStore(state => ({
+    const { app, lang, langName, locked, setLocked } = usePageStore(state => ({
         app: state.platform,
         lang: state.language,
+        langName: state.languageName,
         locked: state.translate_controls_locked,
         setLocked: state.setTranslateControlsLocked
     }), shallow);
 
-    const { allLanguages, setEnglishTranslations, setManyTranslations } = useTranslationsStore(state => ({
-        allLanguages: state.languages,
+    const { setEnglishTranslations, setManyTranslations } = useTranslationsStore(state => ({
         setEnglishTranslations: state.prepareEnglishTranslations,
         setManyTranslations: state.setManyTranslations
     }), shallow);
@@ -27,7 +27,6 @@ export default function LoadTranslationButton() {
     const download = async () => {
         try {
 
-            const langName = allLanguages.find((l) => l.code === lang)?.name;
 
             const options = {
                 'local': 'Resume from my last saved point - Empty if first time',
@@ -49,7 +48,7 @@ export default function LoadTranslationButton() {
             if (error)
                 throw new Error(message);
 
-            setEnglishTranslations(app, en_data);
+            setEnglishTranslations(app, lang, en_data);
             StopLoading();
             ShowLoading({ title: `Fetching  available translations for ${langName}` });
 
