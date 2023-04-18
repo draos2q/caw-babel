@@ -14,7 +14,7 @@ export type TranslateArgs = {
 interface TranslationState {
     languages: LanguageModel[],
     translation: Translation,
-    prepareEnglishTranslations: (app: CAW_APP, data: any) => void
+    prepareEnglishTranslations: (app: CAW_APP, language: string, data: any) => void
     translate: (agrs: TranslateArgs) => void
     setManyTranslations: (translations: TranslateArgs[]) => void
     setLanguageList: (languages: LanguageModel[]) => void
@@ -28,9 +28,9 @@ const useTranslationsStore = create<TranslationState>()((set) => ({
         diccionary: []
     },
     setLanguageList: (languages: LanguageModel[]) => set(() => ({ languages: languages })),
-    prepareEnglishTranslations: (app: CAW_APP, data: any) => set(state => {
+    prepareEnglishTranslations: (app: CAW_APP, language: string, data: any) => set(state => {
 
-        const translation = prepareStructureForTranslation(app, 'en', data);
+        const translation = prepareStructureForTranslation(app, language, data);
         if (!translation)
             return state;
 
@@ -53,7 +53,7 @@ const useTranslationsStore = create<TranslationState>()((set) => ({
         setTranslationToLocalStorage({ app: agrs.app, language: agrs.lang, group: agrs.group, key: agrs.key, value: agrs.translation });
 
         return {
-            ...state,
+            ...state,            
             translation: {
                 ...state.translation,
                 diccionary: translationList
@@ -75,9 +75,10 @@ const useTranslationsStore = create<TranslationState>()((set) => ({
         });
 
         return {
-            ...state,
+            ...state,            
             translation: {
                 ...state.translation,
+                language: translations[ 0 ].lang,
                 diccionary: translationList
             }
         }

@@ -194,6 +194,7 @@ export function generateTranslateFile(translation: Translation) {
 
     const { contentTypes } = getFilesPerApp(translation.application, translation.language);
     const exportableStructure = buildExportableStructure(translation);
+
     switch (contentTypes) {
         case 'application/json':
             const json = JSON.stringify(exportableStructure, null, 2);
