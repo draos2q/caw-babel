@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { CAW_APP } from "src/types";
 
-import allLanguages from 'src/utilities/languages';
+import { getAllLanguages } from 'src/services/Languages';
 export type Page = 'contributors' | 'translations';
 
 interface PageState {
@@ -32,7 +32,7 @@ export const usePageStore = create<PageState>((set) => ({
     }),
     changeSelectedLanguage: (language: string) => set((state) => {
 
-        const _lang = allLanguages.find((l) => l.code === language);
+        const _lang = getAllLanguages().find((l) => l.code === language);
         return (
             {
                 ...state,
