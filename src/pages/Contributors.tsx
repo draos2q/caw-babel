@@ -28,7 +28,7 @@ const item = {
 
 export default function Contributors() {
 
-    const { contributors } = useContributorsStore();    
+    const { contributors } = useContributorsStore();
 
     return (
         <Container maxW={"3xl"}>
@@ -42,7 +42,7 @@ export default function Contributors() {
                     as="h1"
                     size={'2xl'}
                 >
-                    Already {contributors.length} awesome contributors!
+                    Grateful acknowledgments to our contributors!
                 </Heading>
                 <motion.ul
                     style={{
@@ -117,7 +117,7 @@ export default function Contributors() {
                             </div>
                         </motion.li>
                     ))}
-                </motion.ul>              
+                </motion.ul>
             </Stack>
         </Container>
     );

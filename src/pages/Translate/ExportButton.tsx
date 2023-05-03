@@ -69,7 +69,8 @@ export default function ExportButton({ disabled, translation }: Props) {
                                 <Button
                                     variant={'solid'}
                                     colorScheme={'green'}
-                                    size={'sm'}
+                                    size={'md'}
+                                    minW={{ base: '100%', md: 'initial' }}
                                     mr={4}
                                     leftIcon={<ExternalLinkIcon />}
                                     onClick={handleExport}
@@ -79,11 +80,12 @@ export default function ExportButton({ disabled, translation }: Props) {
                                 <Button
                                     variant={'outline'}
                                     colorScheme={'green'}
-                                    size={'sm'}
+                                    size={'md'}
+                                    minW={{ base: '100%', md: 'initial' }}
                                     mr={4}
                                     onClick={showForm ? closeForm : openForm}
                                 >
-                                    More ...
+                                    {showForm ? 'Hide ...' : 'More ...'}
                                 </Button>
                             </Stack>
                             <Text
