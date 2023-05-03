@@ -1,8 +1,8 @@
-import { Button, Select, Stack, Text } from '@chakra-ui/react';
-import { AddIcon } from '@chakra-ui/icons';
+import { Select, Stack, Text } from '@chakra-ui/react';
 
-import { useTranslationsStore } from '~/src/store/TranslationStore';
-import { usePageStore } from '~/src/store/PageStore';
+import { useTranslationsStore } from 'src/store/TranslationStore';
+import { usePageStore } from 'src/store/PageStore';
+import { AddLanguageLocally } from './AddLanguage'
 
 export default function LanguageController() {
 
@@ -28,14 +28,7 @@ export default function LanguageController() {
                     {allLanguages.map((lang) => (<option key={lang.code} value={lang.code}>{lang.nativeName}</option>))}
                 </Select>
                 <Text as="span"> or </Text>
-                <Button
-                    width={"full"}
-                    isDisabled={locked}
-                    variant={'outline'}
-                    rightIcon={<AddIcon />}
-                >
-                    Add
-                </Button>
+                <AddLanguageLocally />
             </Stack>
         </>
     );

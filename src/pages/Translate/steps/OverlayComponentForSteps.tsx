@@ -1,7 +1,7 @@
 import { Button, Text, useColorModeValue, VStack } from '@chakra-ui/react';
 import { usePageStore } from '~/src/store/PageStore';
 import { CAW_APPS_OPTIONS } from '~/src/types';
-import languages from '~/src/utilities/languages';
+import { getAllLanguages } from 'src/services/Languages';
 import { confirmAlert } from "~/src/utilities/SweetAlert";
 
 export default function OverlayComponentForSteps() {
@@ -12,7 +12,7 @@ export default function OverlayComponentForSteps() {
     const lang = usePageStore(state => state.language);
     const app = usePageStore(state => state.platform);
     const appName = CAW_APPS_OPTIONS.find(a => a.app === app)?.name || app;
-    const langName = languages.find(l => l.code === lang)?.name || lang;
+    const langName = getAllLanguages().find(l => l.code === lang)?.name || lang;
     const setLocked = usePageStore(state => state.setTranslateControlsLocked);
 
 
