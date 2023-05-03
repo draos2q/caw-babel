@@ -11,4 +11,4 @@
 A translation tool designed to help you translate our [CAW](https://caw.is) projects into your language.
 
 
-Make it happen.
+<b>Make it happen.</b>
