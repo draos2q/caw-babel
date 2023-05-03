@@ -42,8 +42,6 @@ export function AddLanguageLocally() {
             rtl: Boolean(isRTL)
         };
 
-        console.log(lang);
-
         const added = addLanguageToLocalStorage(lang);
 
         if (added) {
