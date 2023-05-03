@@ -5,7 +5,7 @@ import { useRoutes, } from 'react-router-dom';
 
 import MainLayout from 'src/layout';
 import { routes } from "src/routes";
-import languages from 'src/utilities/languages';
+import { getAllLanguages } from 'src/services/Languages';
 import useIsMounted from 'src/hooks/useIsMounted';
 
 import { useTranslationsStore } from './store/TranslationStore';
@@ -19,7 +19,7 @@ function App() {
   const mounted = useIsMounted();
 
   useEffect(() => {
-    setLanguages(languages);
+    setLanguages(getAllLanguages());
   }, [ setLanguages ]);
 
   useEffect(() => {
