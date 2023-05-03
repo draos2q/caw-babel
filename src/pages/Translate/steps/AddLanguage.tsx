@@ -5,8 +5,9 @@ import {
 import { AddIcon } from '@chakra-ui/icons';
 
 import { usePageStore } from 'src/store/PageStore';
+import { useTranslationsStore } from 'src/store/TranslationStore';
 import { LanguageModel } from "src/types";
-import { addLanguageToLocalStorage } from 'src/services/Languages'
+import { addLanguageToLocalStorage, getAllLanguages } from 'src/services/Languages'
 
 
 export function AddLanguageLocally() {
@@ -18,12 +19,24 @@ export function AddLanguageLocally() {
     const toast = useToast()
 
     const locked = usePageStore(state => state.translate_controls_locked);
+    const setLanguages = useTranslationsStore(state => state.setLanguageList);
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     const handleAddLanguage = () => {
 
+        if (!code || !name || !nativeName) {
+            toast.closeAll();
+            toast({
+                status: 'warning',
+                description: `Please fill all the fields`,
+                isClosable: true,
+            });
+
+            return;
+        }
+
         const lang: LanguageModel = {
-            code,
+            code: code.toLowerCase(),
             name,
             nativeName,
             rtl: Boolean(isRTL)
@@ -36,7 +49,6 @@ export function AddLanguageLocally() {
         if (added) {
             toast.closeAll();
             toast({
-                title: 'Language added',
                 description: `You can now select ${lang.nativeName} from the list`,
                 status: 'success',
                 isClosable: true,
@@ -47,12 +59,14 @@ export function AddLanguageLocally() {
         else {
             toast.closeAll();
             toast({
-                title: 'Could not add language',
                 status: 'warning',
                 description: `The language ${lang.nativeName} already exists`,
                 isClosable: true,
             });
         }
+
+        const langs = getAllLanguages();
+        setLanguages(langs);
     }
 
     return (
@@ -83,11 +97,20 @@ export function AddLanguageLocally() {
                             <Stack spacing={4}>
                                 <FormControl id="email">
                                     <FormLabel>Code</FormLabel>
-                                    <Input type="text" value={code} onChange={(e) => setCode(e.target.value)} />
+                                    <Input type="text"
+                                        value={code}
+                                        maxLength={2}
+                                        onChange={(e) => setCode(e.target.value)}
+                                    />
                                 </FormControl>
                                 <FormControl id="name">
                                     <FormLabel>Name</FormLabel>
-                                    <Input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                                    <Input
+                                        type="text"
+                                        value={name}
+                                        maxLength={100}
+                                        onChange={(e) => setName(e.target.value)}
+                                    />
                                 </FormControl>
                                 <FormControl id="native-name">
                                     <FormLabel>How is it written in your language?</FormLabel>
@@ -99,8 +122,8 @@ export function AddLanguageLocally() {
                                     </FormLabel>
                                     <RadioGroup value={isRTL} onChange={(val) => setIsRTL(val)}>
                                         <HStack spacing='24px'>
-                                            <Radio value='true'>Yes</Radio>
                                             <Radio value='false'>No</Radio>
+                                            <Radio value='true'>Yes</Radio>
                                         </HStack>
                                     </RadioGroup>
                                 </FormControl>
