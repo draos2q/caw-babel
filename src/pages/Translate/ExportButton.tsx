@@ -7,9 +7,10 @@ import {
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 import { Translation } from "src/types";
-import ContributorForm from 'src/components/ContributorForm';
-import WrapperFadeAnimation from 'src/components/WrapperFade';
+// import ContributorForm from 'src/components/ContributorForm';
+// import WrapperFadeAnimation from 'src/components/WrapperFade';
 import { generateTranslateFile } from 'src/utilities/buildTranslationStructure';
+
 
 
 type Props = {
@@ -20,7 +21,7 @@ type Props = {
 export default function ExportButton({ disabled, translation }: Props) {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { isOpen: showForm, onOpen: openForm, onClose: closeForm } = useDisclosure();
+    // const { isOpen: showForm, onOpen: openForm, onClose: closeForm } = useDisclosure();
 
     const handleExport = () => {
         generateTranslateFile(translation);
@@ -77,7 +78,7 @@ export default function ExportButton({ disabled, translation }: Props) {
                                 >
                                     Download
                                 </Button>
-                                <Button
+                                {/* <Button
                                     variant={'outline'}
                                     colorScheme={'green'}
                                     size={'md'}
@@ -86,7 +87,7 @@ export default function ExportButton({ disabled, translation }: Props) {
                                     onClick={showForm ? closeForm : openForm}
                                 >
                                     {showForm ? 'Hide ...' : 'More ...'}
-                                </Button>
+                                </Button> */}
                             </Stack>
                             <Text
                                 fontSize={{ base: 'sm', md: 'md' }}
@@ -94,12 +95,12 @@ export default function ExportButton({ disabled, translation }: Props) {
                             >
                                 Please download the file and send it to us by any means you prefer.
                             </Text>
-                            <WrapperFadeAnimation
+                            {/* <WrapperFadeAnimation
                                 show={showForm}
                                 exitDuration={0.5}
                             >
                                 <ContributorForm />
-                            </WrapperFadeAnimation>
+                            </WrapperFadeAnimation> */}
                         </VStack>
                     </ModalBody>
                 </ModalContent>
