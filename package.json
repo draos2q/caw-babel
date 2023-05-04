@@ -4,13 +4,14 @@
   "version": "0.0.1",
   "type": "module",
   "license": "MIT",
-  "homepage": "https://github.com/draos2q/caw-babel/",
+  "author": {
+    "name": "Teh CAWMmunity",
+    "url": "https://caw.is"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview",
-    "predeploy": "rm -rf dist && rm -rf node_modules/.cache/gh-pages && yarn run build",
-    "deploy": "yarn run predeploy && gh-pages -d dist"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.17",
@@ -45,7 +46,6 @@
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@vitejs/plugin-react": "^3.1.0",
-    "gh-pages": "^5.0.0",
     "typescript": "^4.9.3",
     "vite": "^4.1.0",
     "vite-plugin-eslint": "^1.8.1"

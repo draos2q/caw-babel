@@ -24,6 +24,5 @@ export default defineConfig({
     eslint(),
     tsconfigPaths(),
     nodePolyfills(),
-  ],
-  base: '/caw-babel/',
+  ]
 });
