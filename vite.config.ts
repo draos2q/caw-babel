@@ -11,7 +11,7 @@ import eslint from 'vite-plugin-eslint';
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
 export default defineConfig({
-  base: './',
+  base: '/caw-babel/',
   resolve: {
     alias: {
       '~/': path.resolve(__dirname, './src/*'),
