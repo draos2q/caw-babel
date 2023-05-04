@@ -1,8 +1,8 @@
 import {
     Button, Box, Stack, HStack, FormControl, FormLabel, Input, RadioGroup, Radio, useDisclosure, useControllableState, useToast,
-    Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay,
+    Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Icon,
 } from '@chakra-ui/react';
-import { AddIcon } from '@chakra-ui/icons';
+import { AddIcon, InfoIcon } from '@chakra-ui/icons';
 
 import { usePageStore } from 'src/store/PageStore';
 import { useTranslationsStore } from 'src/store/TranslationStore';
@@ -94,7 +94,17 @@ export function AddLanguageLocally() {
                         <Box>
                             <Stack spacing={4}>
                                 <FormControl id="email">
-                                    <FormLabel>Code</FormLabel>
+                                    <FormLabel alignItems={"center"} >
+                                        ISO 639-1: two-letter Code
+                                        <a
+                                            href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes"
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            style={{ marginLeft: '5px' }}
+                                        >
+                                            <Icon as={InfoIcon} />
+                                        </a>
+                                    </FormLabel>
                                     <Input type="text"
                                         value={code}
                                         maxLength={2}
@@ -102,7 +112,7 @@ export function AddLanguageLocally() {
                                     />
                                 </FormControl>
                                 <FormControl id="name">
-                                    <FormLabel>Name</FormLabel>
+                                    <FormLabel>ISO language name</FormLabel>
                                     <Input
                                         type="text"
                                         value={name}
