@@ -32,7 +32,7 @@ export default function OverlayComponentForSteps() {
 
     return (
         <VStack
-            zIndex={100}
+            zIndex={10}
             position="absolute"
             bg={bgColor}
             visibility={locked ? "visible" : "hidden"}
