@@ -1,11 +1,8 @@
-import { Avatar, Heading, Spacer, Stack, Tooltip, Link, Container } from "@chakra-ui/react";
+import { Heading, Spacer, Stack, Container } from "@chakra-ui/react";
 import { motion } from 'framer-motion';
-import { Link as RouterLink } from "react-router-dom";
-import Blockies from 'react-blockies';
-
 
 import { useContributorsStore } from "src/store/ContributorStore";
-import { isValidUrl } from "src/utilities/helper";
+import ContributorProfile from "./ContributorProfile";
 
 const list = {
     visible: {
@@ -57,14 +54,14 @@ export default function Contributors() {
                     animate="visible"
                     variants={list}
                 >
-                    {contributors.map((person) => (
+                    {contributors.map((contributor) => (
                         <motion.li
                             style={{
                                 listStyle: 'none',
                                 marginRight: '-10px',
                             }}
-                            key={person.id}
-                            data-testid={person.id}
+                            key={contributor.id}
+                            data-testid={contributor.id}
                             variants={item}
                             whileHover={{
                                 zoom: 1.5,
@@ -86,34 +83,7 @@ export default function Contributors() {
                                     fontSize: '38px',
                                 }}
                             >
-                                <Tooltip
-                                    label={person.name}
-                                    aria-label={person.name}
-                                >
-                                    <Link
-                                        isExternal={isValidUrl(person.profile)}
-                                        as={RouterLink}
-                                        to={person.profile}
-                                        padding={0}
-                                        margin={0}
-                                        textDecoration="none"
-                                    >
-                                        {person.avatar ?
-                                            <Avatar
-                                                p={1}
-                                                m={1}
-                                                src={person.avatar}
-                                            />
-                                            :
-                                            <Blockies
-                                                seed={person.name}
-                                                scale={5}
-                                                size={8}
-                                                className="rounded-full"
-                                            />
-                                        }
-                                    </Link>
-                                </Tooltip>
+                                <ContributorProfile contributor={contributor} />
                             </div>
                         </motion.li>
                     ))}
