@@ -11,6 +11,7 @@ import eslint from 'vite-plugin-eslint';
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
 export default defineConfig({
+  base: './',
   resolve: {
     alias: {
       '~/': path.resolve(__dirname, './src/*'),
